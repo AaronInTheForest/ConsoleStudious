@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConsoleStudious
 {
@@ -6,15 +7,19 @@ namespace ConsoleStudious
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var user = Welcome();
+            var topics = Survey(user);
+            
+            ShutDown();
+        }
 
-            var name = Prompt("What is your name?");
-
-            Console.WriteLine($"Hello {name}!");
-
+        private static void ShutDown()
+        {
+            Console.WriteLine("~~~      END OF STUDIOUS     ~~~");
             Console.ReadKey();
         }
-        public static string Prompt(string question)
+
+        public static string PromptForString(string question)
         {
             Console.WriteLine(question);
             Console.WriteLine("(press enter to continue...)");
@@ -29,6 +34,61 @@ namespace ConsoleStudious
             } while (string.IsNullOrWhiteSpace(response));
             
             return response;
+        }
+
+        public static int PromptForInt(string question)
+        {
+            int i;
+            string response;
+
+            Console.WriteLine(question);
+            Console.WriteLine("(press enter to continue...)");
+
+            do
+            {
+                response = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(response))
+                {
+                    Console.WriteLine("Response cannot be blank.");
+                }
+
+                if (!Int32.TryParse(response, out i))
+                {
+                    i = -1;
+                    Console.WriteLine("Response must be a whole number.");
+                }
+            } while (string.IsNullOrWhiteSpace(response) 
+                    || i < 0);
+            
+            return i;
+        }
+
+        public static User Welcome()
+        {
+            Console.WriteLine("Hello World, I am Studious for C# Console!");
+
+            User user = new User();
+
+            user.Name = PromptForString("What is your name?");
+            Console.WriteLine($"Hello {user.Name}!");
+
+            PromptForString("Are you ready to begin?");
+
+            user.Minutes = PromptForInt("How much time (in minutes) do you have to study right now?");
+            Console.WriteLine($"You say you only have {user.Minutes}, but I will expect you to study for {user.Expectations}.");
+
+            Console.WriteLine($"You must work hard, {user.Name}!");
+            Console.WriteLine($"Your study session begins now.");
+            user.StartTime = DateTime.Now;
+
+            return user;
+        }
+
+        public static List<string> Survey(User user)
+        {
+            List<string> topics = new List<string>();
+            return topics;
         }
     }
 }
