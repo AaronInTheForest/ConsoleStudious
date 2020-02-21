@@ -88,7 +88,47 @@ namespace ConsoleStudious
         public static List<string> Survey(User user)
         {
             List<string> topics = new List<string>();
+            string topic;
+
+            Console.WriteLine("You are now in Survey mode.");
+            if (PromptForTrue("Would you like to learn about SQ3R?"))
+            {
+                Console.WriteLine("~~~~ CONTENT NOT FOUND ~~~~");
+            }
+            Console.WriteLine("You can either type in a topic to study, or type in the word 'Studious' to end the study session");
+            do
+            {
+                Console.WriteLine("New Topic:");
+                topic = PromptForString("(type 'Studious' to end Survey mode)");
+                topics.Add(topic);
+            } while (!topic.Equals("Studious"));
+            
             return topics;
+        }
+
+        private static bool PromptForTrue(string question)
+        {
+            bool truthy;
+            string response;
+
+            Console.WriteLine(question);
+            do
+            {
+                response = PromptForString("(Y/N)");
+            } while (!(response.Equals("Y") || response.Equals("N")));
+            switch (response)
+            {
+                case "Y":
+                    truthy = true;
+                    break;
+                case "N":
+                    truthy = false;
+                    break;
+                default:
+                    truthy = false;
+                    break;
+            }
+            return truthy;
         }
     }
 }
